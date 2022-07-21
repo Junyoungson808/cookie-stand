@@ -1,6 +1,23 @@
 'use strict';
 
 let salesSection = document.getElementById('sales');
+// let myForm = document.getElementById('my-form');
+// let 
+
+
+// function handleClick(event){
+//   event.preventDefault();
+//   console.log(event);
+//   let name = event.target.newStoreName.value;
+//   console.log(newStoreName);
+// }
+
+// let btn = docement.querySelector('buton');
+
+// btn.addEventListener('click',handleClick);
+
+// let myform = document.getElementById('my-form')
+
 let hours = ['6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm'];
 
 function randNumCust(min,max){
@@ -90,6 +107,7 @@ footer();
 // lima.salesPerHour();
 // // lima.render();
 
+// Function Footer ***
 function header (){
   let tableElem = document.getElementById('table');
   let tableRow = document.createElement('tr');
@@ -107,24 +125,50 @@ function header (){
 }
 
 
+// // // Function Footer ***
+// function footer (){
+//   let tableElem = document.getElementById('table');
+//   let tableRow = document.createElement('tr');
+//   tableElem.appendChild(tableRow);
 
-function footer (){
-  let tableElem = document.getElementById('table');
-  let tableRow = document.createElement('tr');
-  tableElem.appendChild(tableRow);
+//   let tableTh = document.createElement('th');
+//   tableTh.textContent = 'Totals';
+//   tableRow.appendChild(tableTh);
 
-  let tableTh = document.createElement('th');
-  tableTh.textContent = 'Totals';
-  tableRow.appendChild(tableTh);
-
-  for (let i = 0; i < hours.length; i++){
-    const tCell = document.createElement('td');
-    tCell.textContent = hours[i];
-    tableRow.appendChild(tCell);
-  }
-}
+//   for (let i = 0; i < hours.length; i++){
+//     const tCell = document.createElement('td');
+//     tCell.textContent = hours[i];
+//     tableRow.appendChild(tCell);
+//   }
+// }
 
 
+// ****** standalone function to render the footer
+function renderFooter(){
+  let tr = document.createElement('tr');
+  cookieTable.appendChild('tr');
+};
+
+// Building content for the row
+// total cell
+//   let th = document.createElement('th');
+//   th.textContent = "Totals";
+//   tr.appendChild(th);
+//   // nested loop to populate data cells
+//   for(let i = 0; i <hours.length;i++){
+//     let hourlyTotal = 0;
+//     for(let j = 0; j < storeArray.length; j++){
+//       hourlyTotal = hourlyTotal + storeArray[j].cookies[i];
+//       grandTotal = grandTotal + storeArray[j].cookies[i];
+//     }
+//     let td = document.createElement('td');
+//     td.textContent = hourlyTotal;
+//     tr.appendChild(td);
+//   }
+//   let td = document.createElement('td');
+//   td.textContent = grandTotal;
+//   tr.appendChild(td);
+// }
 // let seattle = {
 //   name: 'Seattle',
 //   minCust: 23,
@@ -212,7 +256,33 @@ function footer (){
 //       // articleElem.appendChild(pElem);
 //       // let ulElem = document.createElement('ul');
 //       // articleElem.appendChild(ulElem);
-//     }
-//   },
-// };
 
+// Step 3 Define our callback.
+// function handleSubmit(event){
+//   event.preventDefault();
+
+//   let name = event.target.newStoreName.value;
+//   let cookiesolds = event.target.newStoreName.value;
+//   interests = interests.split(', ');
+
+//   let isGoodWithCats = event.target.isGoodWithCats.checked;
+//   let isGoodWithDogs = event.target.isGoodWithDogs.checked;
+//   let isGoodWithKids = event.target.isGoodWithKids.checked;
+
+  
+//   newStoreName.storeName();
+//   newStoreName.render();
+
+//   newStoreName.reset();
+
+
+// let interests = event.target.interests.value;
+//playing,eating,napping
+// interests = interests.split(',');
+// }
+
+// Hint for Lab - Remove your footer and recreate it
+
+
+// ****** STEP 2 Attach event Listener type of event. and our callback function or event handler.
+// myform.addEventListener('submit', handleSubmit);
