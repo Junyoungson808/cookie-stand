@@ -1,30 +1,39 @@
 'use strict';
 
 let salesSection = document.getElementById('sales');
-// let myForm = document.getElementById('my-form');
-// let 
-
-
-// function handleClick(event){
-//   event.preventDefault();
-//   console.log(event);
-//   let name = event.target.newStoreName.value;
-//   console.log(newStoreName);
-// }
-
-// let btn = docement.querySelector('buton');
-
-// btn.addEventListener('click',handleClick);
-
-// let myform = document.getElementById('my-form')
-
+let tableFoot = document.getElementById('tfoot');
 let hours = ['6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm'];
+let storeName =  [];
+
+// STEP 1 GRAB THE ELEMENT I WANT TO LISTEN TO
+let myForm = document.getElementById('my-form');
+
+// STEP 3 DEFINTE OUR CALLBACK FUNCTION OR EVENT HANDLER
+function handleClick(event){
+  event.preventDefault();
+  console.log(event);
+  let name = event.target.newStoreName.value;
+  let minCust = parseInt(event.target.minCust.value);
+  let maxCust = parseInt(event.target.maxCust.value);
+  let averageCookie = parseFloat(event.target.averageCookie.value);
+  console.log(name,minCust,maxCust,averageCookie);
+
+  let newStoreName = new StoreName(name,minCust,maxCust,averageCookie);
+  newStoreName.render();
+  // console.log(newStoreName);
+  tableFoot.textContent = '';
+  footer();
+  // document.getElementById("myTable").deleteRow(-1);
+  // newStoreName.render();
+  // footer();
+}
+
+// STEP 2 ATTACH MY EVENT LISTENER
+myForm.addEventListener('submit',handleClick);
 
 function randNumCust(min,max){
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
-let storeName =  [];
 
 function StoreName(name,minCust,maxCust,avgCookie){
   this.name = name;
@@ -36,13 +45,6 @@ function StoreName(name,minCust,maxCust,avgCookie){
   storeName.push(this);
 }
 
-let seattle = new StoreName('Seattle',23,65,6.3);
-let tokyo = new StoreName('Tokyo', 3, 24, 1.2);
-let dubai =  new StoreName('Dubai', 11,20,3.7);
-let paris = new StoreName('Paris',20,38,2.3);
-let lima = new StoreName('Lima',2,16,4.6);
-
-
 StoreName.prototype.calcPeoplePerHour = function(){
   for (let i = 0; i < hours.length; i++){
     this.customerEachHour.push(randNumCust(this.minCust,this.maxCust));
@@ -50,6 +52,7 @@ StoreName.prototype.calcPeoplePerHour = function(){
 };
 
 StoreName.prototype.salesPerHour = function(){
+  this.calcPeoplePerHour()
   for (let i = 0; i < hours.length; i++){
     let cookiesSold = Math.round(this.customerEachHour[i]*this.avgCookie);
     this.cookieSoldPerHour.push(cookiesSold);
@@ -58,7 +61,6 @@ StoreName.prototype.salesPerHour = function(){
 };
 
 StoreName.prototype.renderAsTable = function(){
-
 };
 
 StoreName.prototype.render = function(){
@@ -80,15 +82,56 @@ StoreName.prototype.render = function(){
   }
 };
 
-header();
+// Function Header ***
+function header (){
+  let tableElem = document.getElementById('table');
+  let tableHead = document.createElement('thead');
+  tableElem.appendChild(tableHead);
+  let tableRow = document.createElement('tr');
+  tableHead.appendChild(tableRow);
+  let tableTh = document.createElement('th');
+  tableTh.textContent = '';
+  tableRow.appendChild(tableTh);
 
-let storeArray = [seattle,tokyo,paris,dubai,lima];
-for (let i = 0; i < storeArray.length; i++){
-  storeArray[i].calcPeoplePerHour();
-  storeArray[i].salesPerHour();
-  storeArray[i].render();
+  for (let i = 0; i < hours.length; i++){
+    const tCell = document.createElement('td');
+    tCell.textContent = hours[i];
+    tableRow.appendChild(tCell);
+  }
 }
 
+// Function Footer ***
+function footer (){
+  let tableRow = document.createElement('tr');
+  tableFoot.appendChild(tableRow);
+
+  let tableTh = document.createElement('th');
+  tableTh.textContent = 'Totals';
+  tableRow.appendChild(tableTh);
+
+  for (let i = 0; i < hours.length; i++){
+    let hourlyTotal = 0;
+    for (let j = 0; j < storeName.length;j++){
+      hourlyTotal += storeName[j].cookieSoldPerHour[i];
+    }
+    const tCell = document.createElement('td');
+    tCell.textContent = hourlyTotal;
+    tableRow.appendChild(tCell);
+  }
+}
+
+//  function calls
+new StoreName('Seattle',23,65,6.3);
+new StoreName('Tokyo', 3, 24, 1.2);
+new StoreName('Dubai', 11,20,3.7);
+new StoreName('Paris',20,38,2.3);
+new StoreName('Lima',2,16,4.6);
+
+for (let i = 0; i < storeName.length; i++){
+  storeName[i].render();
+}
+
+header();
 footer();
 
 // seattle.calcPeoplePerHour();
@@ -107,48 +150,13 @@ footer();
 // lima.salesPerHour();
 // // lima.render();
 
-// Function Footer ***
-function header (){
-  let tableElem = document.getElementById('table');
-  let tableRow = document.createElement('tr');
-  tableElem.appendChild(tableRow);
-
-  let tableTh = document.createElement('th');
-  tableTh.textContent = '';
-  tableRow.appendChild(tableTh);
-
-  for (let i = 0; i < hours.length; i++){
-    const tCell = document.createElement('td');
-    tCell.textContent = hours[i];
-    tableRow.appendChild(tCell);
-  }
-}
-
-
-// // // Function Footer ***
-// function footer (){
-//   let tableElem = document.getElementById('table');
-//   let tableRow = document.createElement('tr');
-//   tableElem.appendChild(tableRow);
-
-//   let tableTh = document.createElement('th');
-//   tableTh.textContent = 'Totals';
-//   tableRow.appendChild(tableTh);
-
-//   for (let i = 0; i < hours.length; i++){
-//     const tCell = document.createElement('td');
-//     tCell.textContent = hours[i];
-//     tableRow.appendChild(tCell);
-//   }
-// }
-
 
 // ****** standalone function to render the footer
-function renderFooter(){
-  let tr = document.createElement('tr');
-  cookieTable.appendChild('tr');
-};
-
+// function renderFooter(){
+//   let tr = document.createElement('tr');
+//   cookieTable.appendChild('tr');
+// };
+  
 // Building content for the row
 // total cell
 //   let th = document.createElement('th');
