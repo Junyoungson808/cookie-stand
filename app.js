@@ -2,8 +2,8 @@
 
 let salesSection = document.getElementById('sales');
 let tableFoot = document.getElementById('tfoot');
-let hours = ['6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm'];
-let storeName =  [];
+let hours = ['6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','Store Daily Total'];
+let storeName = [];
 
 // STEP 1 GRAB THE ELEMENT I WANT TO LISTEN TO
 let myForm = document.getElementById('my-form');
@@ -46,22 +46,22 @@ function StoreName(name,minCust,maxCust,avgCookie){
 }
 
 StoreName.prototype.calcPeoplePerHour = function(){
-  for (let i = 0; i < hours.length; i++){
+  for (let i = 0; i < hours.length - 1; i++){
     this.customerEachHour.push(randNumCust(this.minCust,this.maxCust));
   }
 };
 
 StoreName.prototype.salesPerHour = function(){
   this.calcPeoplePerHour()
-  for (let i = 0; i < hours.length; i++){
+  for (let i = 0; i < hours.length - 1; i++){
     let cookiesSold = Math.round(this.customerEachHour[i]*this.avgCookie);
     this.cookieSoldPerHour.push(cookiesSold);
     this.totalCookieSold += cookiesSold;
   }
 };
 
-StoreName.prototype.renderAsTable = function(){
-};
+// StoreName.prototype.renderAsTable = function(){
+// };
 
 StoreName.prototype.render = function(){
   this.salesPerHour();
@@ -75,12 +75,24 @@ StoreName.prototype.render = function(){
   tableTh.textContent = `${this.name}`;
   tableRow.appendChild(tableTh);
 
+  let inc = 0;
   for (let i = 0; i < hours.length; i++){
     const tCell = document.createElement('td');
-    tCell.textContent = this.cookieSoldPerHour[i];
+    if ( i === hours.length - 1) {
+      // for ( let j = 0; j < hours.length - 1; j++) {
+      //   inc += tableRow[j];
+      //   console.log(tableRow[j]);
+      // }
+      tCell.textContent = inc;
+      inc = 0;
+    } else {
+      inc += this.cookieSoldPerHour[i];
+      tCell.textContent = this.cookieSoldPerHour[i];
+    }
     tableRow.appendChild(tCell);
   }
 };
+
 
 // Function Header ***
 function header (){
@@ -109,13 +121,21 @@ function footer (){
   tableTh.textContent = 'Totals';
   tableRow.appendChild(tableTh);
 
+  let inc = 0;
+
   for (let i = 0; i < hours.length; i++){
-    let hourlyTotal = 0;
-    for (let j = 0; j < storeName.length;j++){
-      hourlyTotal += storeName[j].cookieSoldPerHour[i];
-    }
     const tCell = document.createElement('td');
-    tCell.textContent = hourlyTotal;
+    if ( i === hours.length - 1) {
+      tCell.textContent = inc;
+      inc = 0;
+    } else {
+      let hourlyTotal = 0;
+      for (let j = 0; j < storeName.length;j++){
+        hourlyTotal += storeName[j].cookieSoldPerHour[i];
+      }
+      tCell.textContent = hourlyTotal;
+      inc += hourlyTotal;
+    }
     tableRow.appendChild(tCell);
   }
 }
@@ -133,6 +153,7 @@ for (let i = 0; i < storeName.length; i++){
 
 header();
 footer();
+
 
 // seattle.calcPeoplePerHour();
 // seattle.salesPerHour();
